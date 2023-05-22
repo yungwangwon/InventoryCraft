@@ -12,8 +12,11 @@ using UnityEditor.Experimental.GraphView;
 //인벤토리매니저
 public class InventoryManager : MonoBehaviour
 {
+	[SerializeField] private List<CraftRecipeClass> craftRecipes = new List<CraftRecipeClass>();
+
 	[SerializeField] private GameObject itemCursor;
-	[SerializeField] private GameObject slotsHolder;
+	[SerializeField] private GameObject slotsHolder_Inventory;
+	[SerializeField] private GameObject slotsHolder_Craft;
 
 	[SerializeField] private ItemClass itemToAdd;
 	[SerializeField] private ItemClass itemToRemove;
@@ -35,7 +38,8 @@ public class InventoryManager : MonoBehaviour
 	private void Start()
 	{
 		//인벤토리 슬롯을 slotholer에 가지고있는 개수 만큼 할당
-		slots = new GameObject[slotsHolder.transform.childCount];
+		slots = new GameObject[slotsHolder_Inventory.transform.childCount + 
+			slotsHolder_Craft.transform.childCount];
 		items = new SlotClass[slots.Length];
 		for(int i =0; i < slots.Length; i++)
 		{
@@ -46,13 +50,15 @@ public class InventoryManager : MonoBehaviour
 			items[i] = startingItems[i];
 		}
 
-		//Debug.Log(items.Length);
-		for (int i = 0; i < slotsHolder.transform.childCount; i++)
-			slots[i] = slotsHolder.transform.GetChild(i).gameObject;
+		//
+		for (int i = 0; i < slotsHolder_Inventory.transform.childCount; i++)
+			slots[i] = slotsHolder_Inventory.transform.GetChild(i).gameObject;
+		for (int i = 0; i < slotsHolder_Craft.transform.childCount; i++)
+			slots[i + slotsHolder_Inventory.transform.childCount] = slotsHolder_Craft.transform.GetChild(i).gameObject;
 
 		RefreshUI();
-		Add(itemToAdd, 1);
-		Remove(itemToRemove);
+		//Add(itemToAdd, 1);
+		//Remove(itemToRemove);
 	}
 
 	private void Update()
@@ -72,6 +78,16 @@ public class InventoryManager : MonoBehaviour
 			}
 			else
 				BeginItemMove();
+		}	
+		//우클릭
+		else if (Input.GetMouseButtonDown(1))
+		{
+			if (isMovingItem)
+			{
+				EndItemMove_Single();
+			}
+			else
+				BeginItemMove_Half();
 		}
 	}
 	#region Inventory Utils
@@ -98,6 +114,31 @@ public class InventoryManager : MonoBehaviour
 
 			}
 		}
+		
+	}
+
+	//제작
+	public bool Craft()
+	{
+		int i;
+		for(i = 0; i< craftRecipes.Count; i++)
+		{
+			for(int j = 0; j<9;j++)
+			{
+				if (craftRecipes[i].inputItems[j].GetItem() == items[15 + j].GetItem())
+					continue;
+				else
+					return false;
+			}
+
+		}
+
+		items[items.Length-1] = new SlotClass(craftRecipes[i-1].outputItem.GetItem(), 1);
+
+		RefreshUI();
+
+
+		return true;
 	}
 
 	//아이템 추가
@@ -160,7 +201,7 @@ public class InventoryManager : MonoBehaviour
 	//추가하려는 아이템이 이미 인벤토리 안에 존재하면 그 아이템의 SlotClass를 반환
 	public SlotClass Contains(ItemClass item)
 	{
-		for(int i =0;i< items.Length ; i++)
+		for(int i =0;i< slotsHolder_Inventory.transform.childCount; i++)
 		{
 			if (items[i].GetItem() == item)
 				return items[i];
@@ -172,12 +213,10 @@ public class InventoryManager : MonoBehaviour
 	#region Moving Stuff
 	//가까운 슬롯을 선택해서 반환
 	private SlotClass GetClosestSlot()
-	{
-		Debug.Log(Input.mousePosition);
-
+	{ 
 		for(int i =0; i<slots.Length; i++)
 		{
-			if (Vector2.Distance(slots[i].transform.position, Input.mousePosition) <= 25)
+			if (Vector2.Distance(slots[i].transform.position, Input.mousePosition) <= 15)
 				return items[i];
 		}
 
@@ -198,7 +237,29 @@ public class InventoryManager : MonoBehaviour
 		originalSlot.Clear();
 		isMovingItem = true;
 		RefreshUI();
+		Craft();
+		return true;
 
+	}
+
+	private bool BeginItemMove_Half()
+	{
+		//마우스 포인터와 가까운 슬롯 선택
+		originalSlot = GetClosestSlot();
+		//슬롯이 존재하지않거나 슬롯속의 아이템이 존재하지않는다면
+		if (originalSlot == null || originalSlot.GetItem() == null)
+			return false;
+
+		// movingslot에 선택된 슬롯의 절반양을 복사 한후 그만큼을 originalslot에서 빼줌
+		movingSlot = new SlotClass(originalSlot.GetItem(), Mathf.CeilToInt( originalSlot.GetNum() / 2.0f ));
+		originalSlot.SubNum(Mathf.CeilToInt(originalSlot.GetNum() / 2.0f));
+
+		if (originalSlot.GetNum() == 0)
+			originalSlot.Clear();
+
+		isMovingItem = true;
+		RefreshUI();
+		Craft();
 		return true;
 
 	}
@@ -207,7 +268,9 @@ public class InventoryManager : MonoBehaviour
 	private bool EndItemMove()
 	{
 		originalSlot = GetClosestSlot();
-		if (originalSlot == null)
+
+
+		if (originalSlot == null || originalSlot == items[items.Length - 1])
 		{
 			Add(movingSlot.GetItem(), movingSlot.GetNum());
 			movingSlot.Clear();
@@ -247,7 +310,53 @@ public class InventoryManager : MonoBehaviour
 		}
 
 		RefreshUI();
+		Craft();
 		isMovingItem = false;
+
+		return true;
+	}
+
+	//아이템을 1개 놓기
+	private bool EndItemMove_Single()
+	{
+		
+		//마우스 포인터와 가까운 슬롯 선택
+		originalSlot = GetClosestSlot();
+
+		//놓으려는 슬롯이 조합결과 슬롯이거나 null값
+		if (originalSlot == null || originalSlot == items[items.Length - 1])
+		{
+			Add(movingSlot.GetItem(), movingSlot.GetNum());
+			movingSlot.Clear();
+			isMovingItem = false;
+			return false;
+		}
+		
+		
+		//놓으려는 슬롯에 아이템이 없음
+		if (originalSlot.GetItem() == null)
+			originalSlot.AddItem(movingSlot.GetItem(), 1);
+		//놓으려는 슬롯에 아이템이 있고 같은 아이템임
+		else if (originalSlot.GetItem() != null && originalSlot.GetItem() == movingSlot.GetItem())
+			originalSlot.AddNum(1);
+		//놓으려는 슬롯에 아이템이 있지만 다른 아이템임
+		else if (originalSlot.GetItem() != null && originalSlot.GetItem() != movingSlot.GetItem())
+			return false;
+
+		movingSlot.SubNum(1);   //들고있는 아이템 1감소
+
+
+		if (movingSlot.GetNum() < 1)
+		{
+			isMovingItem = false;
+			movingSlot.Clear();
+		}
+		else
+			isMovingItem = true;
+		
+
+		RefreshUI();
+		Craft();
 		return true;
 	}
 

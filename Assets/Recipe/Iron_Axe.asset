@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce2be1bf77a1044886aa4e097754c61, type: 3}
+  m_Name: Iron_Axe
+  m_EditorClassIdentifier: 
+  inputItems:
+  - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
+    num: 1
+  - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
+    num: 1
+  - item: {fileID: 0}
+    num: 0
+  - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
+    num: 1
+  - item: {fileID: 11400000, guid: d7df9aa36149c034cbb1e3ab04802eed, type: 2}
+    num: 1
+  - item: {fileID: 0}
+    num: 0
+  - item: {fileID: 0}
+    num: 0
+  - item: {fileID: 11400000, guid: d7df9aa36149c034cbb1e3ab04802eed, type: 2}
+    num: 1
+  - item: {fileID: 0}
+    num: 0
+  outputItem:
+    item: {fileID: 11400000, guid: 79db04a156ee7a14b9830a49b5078795, type: 2}
+    num: 1
