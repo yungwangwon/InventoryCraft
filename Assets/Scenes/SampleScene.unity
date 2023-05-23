@@ -2973,6 +2973,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlotPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 8145357217989975075, guid: f46c4814d5ac99d43a90fdaf509970a1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f46c4814d5ac99d43a90fdaf509970a1, type: 3}
 --- !u!224 &1801331373 stripped
@@ -3377,6 +3381,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6125d1e6a8b94b0418ad89494f5e8d9d, type: 2}
   - {fileID: 11400000, guid: 8f9a3d37fc57c6c4497029f635b87e17, type: 2}
   - {fileID: 11400000, guid: 6a48ce06008a63f489287aee283eb86d, type: 2}
+  - {fileID: 11400000, guid: d0e6b30ae669e2642aa6f9d6c94e207b, type: 2}
+  - {fileID: 11400000, guid: 6c1442baf72af8a448589a91ca1f34fb, type: 2}
   itemCursor: {fileID: 942298239}
   slotsHolder_Inventory: {fileID: 788822103}
   slotsHolder_Craft: {fileID: 1967900831}
@@ -3384,11 +3390,15 @@ MonoBehaviour:
   itemToRemove: {fileID: 0}
   startingItems:
   - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
-    num: 3
+    num: 64
   - item: {fileID: 11400000, guid: d7df9aa36149c034cbb1e3ab04802eed, type: 2}
-    num: 5
-  - item: {fileID: 11400000, guid: d7df9aa36149c034cbb1e3ab04802eed, type: 2}
-    num: 9
+    num: 64
+  - item: {fileID: 11400000, guid: d52f52aadbebcb049829c7180765912d, type: 2}
+    num: 64
+  - item: {fileID: 11400000, guid: 44ae5961900088d46aae003d9eb3658a, type: 2}
+    num: 64
+  - item: {fileID: 11400000, guid: bde0e4ac605e50a45bdbe326015267ce, type: 2}
+    num: 64
 --- !u!4 &1954218392
 Transform:
   m_ObjectHideFlags: 0

@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ce2be1bf77a1044886aa4e097754c61, type: 3}
-  m_Name: Iron_Sword
+  m_Name: Fishing_Pole_Carrot
   m_EditorClassIdentifier: 
   inputItems:
-  - item: {fileID: 0}
-    num: 0
-  - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
+  - item: {fileID: 11400000, guid: e23bd2aaf30589c46ab279b459a11262, type: 2}
+    num: 1
+  - item: {fileID: 11400000, guid: bde0e4ac605e50a45bdbe326015267ce, type: 2}
     num: 1
   - item: {fileID: 0}
     num: 0
   - item: {fileID: 0}
     num: 0
-  - item: {fileID: 11400000, guid: 4ce4044ad6443dd419e02a49ec1ed7a4, type: 2}
-    num: 1
   - item: {fileID: 0}
     num: 0
   - item: {fileID: 0}
     num: 0
-  - item: {fileID: 11400000, guid: d7df9aa36149c034cbb1e3ab04802eed, type: 2}
-    num: 1
+  - item: {fileID: 0}
+    num: 0
+  - item: {fileID: 0}
+    num: 0
   - item: {fileID: 0}
     num: 0
   outputItem:
-    item: {fileID: 11400000, guid: 037593ef4ade372419fa786e6bbef83b, type: 2}
+    item: {fileID: 11400000, guid: 3f434300cb6ec934787ae7004843d33c, type: 2}
     num: 1

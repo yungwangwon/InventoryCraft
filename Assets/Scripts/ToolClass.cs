@@ -13,7 +13,8 @@ public class ToolClass : ItemClass
 	{
 		weapon,
 		pickaxe,
-		axe
+		axe,
+		fishing_rod
 	}
 
 	public override ItemClass GetItem() { return this; }
