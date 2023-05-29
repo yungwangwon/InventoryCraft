@@ -34,6 +34,7 @@ public class SlotClass
 	public ItemClass GetItem() { return item; }
 	public int GetNum() { return num; }
 	public void AddNum(int _num) { num += _num; }
+	public void SetNum(int _num) { num = _num; }
 	public void SubNum(int _num) { num -= _num; }
 	public void AddItem(ItemClass _item, int _num)
 	{

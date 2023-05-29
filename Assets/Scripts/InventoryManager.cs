@@ -60,7 +60,11 @@ public class InventoryManager : MonoBehaviour
 		itemCursor.SetActive(isMovingItem);
 		itemCursor.transform.position = Input.mousePosition;
 		if (isMovingItem)
-			itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
+		{
+			itemCursor.transform.GetChild(0).GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
+			itemCursor.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = movingSlot.GetNum().ToString();
+		}
+			//itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
 
 		//마우스 클릭
 		if (Input.GetMouseButtonDown(0))
@@ -181,7 +185,24 @@ public class InventoryManager : MonoBehaviour
 		//아이템이 중복 존재하는지 비교
 		SlotClass slot = Contains(item);
 		if (slot != null && slot.GetItem().isStackable) //중복이고 해당 아이템을 중복으로 가질수있을때
-			slot.AddNum(1);
+		{
+			//최대 개수 초과
+			if (slot.GetNum() + num > 64)
+			{
+				num -= (64 - slot.GetNum());
+				slot.SetNum(64);
+				for (int i = 0; i < items.Length; i++)
+				{
+					if (items[i].GetItem() == null)
+					{
+						items[i].AddItem(item, num);
+						return true;
+					}
+				}
+			}
+			else
+				slot.AddNum(num);
+		}
 		else
 		{
 			for (int i = 0; i < items.Length; i++)
@@ -233,9 +254,9 @@ public class InventoryManager : MonoBehaviour
 	}
 
 	//추가하려는 아이템이 이미 인벤토리 안에 존재하면 그 아이템의 SlotClass를 반환
-	public SlotClass Contains(ItemClass item)
+	public SlotClass Contains(ItemClass item, int index = 0)
 	{
-		for (int i = 0; i < slotsHolder_Inventory.transform.childCount; i++)
+		for (int i = index; i < slotsHolder_Inventory.transform.childCount; i++)
 		{
 			if (items[i].GetItem() == item)
 				return items[i];
@@ -307,7 +328,7 @@ public class InventoryManager : MonoBehaviour
 	{
 		originalSlot = GetClosestSlot();
 
-
+		//슬롯 선택x or craftslot일 경우
 		if (originalSlot == null || originalSlot == items[items.Length - 1])
 		{
 			Add(movingSlot.GetItem(), movingSlot.GetNum());
@@ -323,6 +344,14 @@ public class InventoryManager : MonoBehaviour
 					// 이동 슬롯의 아이템이 stackable일때
 					if (originalSlot.GetItem().isStackable)
 					{
+						//최대 개수를 넘었을경우
+						if(originalSlot.GetNum() + movingSlot.GetNum() > 64)
+						{
+							movingSlot.SubNum(64 - originalSlot.GetNum());
+							originalSlot.SetNum(64);
+							RefreshUI();
+							return false;
+						}
 						originalSlot.AddNum(movingSlot.GetNum());
 						movingSlot.Clear();
 					}
@@ -376,7 +405,13 @@ public class InventoryManager : MonoBehaviour
 			originalSlot.AddItem(movingSlot.GetItem(), 1);
 		//놓으려는 슬롯에 아이템이 있고 같은 아이템임
 		else if (originalSlot.GetItem() != null && originalSlot.GetItem() == movingSlot.GetItem())
+		{
+			//최대 개수일 경우
+			if (originalSlot.GetNum() == 64)
+				return false;
+
 			originalSlot.AddNum(1);
+		}
 		//놓으려는 슬롯에 아이템이 있지만 다른 아이템임
 		else if (originalSlot.GetItem() != null && originalSlot.GetItem() != movingSlot.GetItem())
 			return false;
