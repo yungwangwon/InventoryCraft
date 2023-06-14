@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616f1c650b1256c4cac66f72cc842a22, type: 3}
+  m_Name: Iron_Bottom
+  m_EditorClassIdentifier: 
+  itemName: Iron_Bottom
+  itemIcon: {fileID: -1357356462, guid: 19d697700e3c46b4fa9f18cce8e8cafd, type: 3}
+  isStackable: 0
+  type: 2

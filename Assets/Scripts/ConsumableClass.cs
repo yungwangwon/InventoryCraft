@@ -12,4 +12,6 @@ public class ConsumableClass : ItemClass
 	public override ToolClass GetTool() { return null; }
 	public override MiscClass GetMisc() { return null; }
 	public override ConsumableClass GetConsumable() { return this; }
+	public override EquipmentClass GetEquipment() { return null; }
+
 }

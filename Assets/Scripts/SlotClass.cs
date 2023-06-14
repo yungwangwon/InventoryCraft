@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 [System.Serializable]
 public class SlotClass 
@@ -10,7 +10,15 @@ public class SlotClass
 	[SerializeField]
 	private ItemClass item;	//item객체
 	[SerializeField]
-	private int num;	//item개수
+	private int num;    //item개수
+
+	public SlotType slotType;
+	public enum SlotType
+	{
+		inventory,
+		craft,
+		equipment
+	}
 
 	public SlotClass() { item = null; num = 0; }
 	public SlotClass(ItemClass _item, int _num)
@@ -34,7 +42,6 @@ public class SlotClass
 	public ItemClass GetItem() { return item; }
 	public int GetNum() { return num; }
 	public void AddNum(int _num) { num += _num; }
-	public void SetNum(int _num) { num = _num; }
 	public void SubNum(int _num) { num -= _num; }
 	public void AddItem(ItemClass _item, int _num)
 	{

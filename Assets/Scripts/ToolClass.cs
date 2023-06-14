@@ -21,4 +21,6 @@ public class ToolClass : ItemClass
 	public override ToolClass GetTool() { return this; }
 	public override MiscClass GetMisc() { return null; }
 	public override ConsumableClass GetConsumable() { return null; }
+	public override EquipmentClass GetEquipment() { return null; }
+
 }
